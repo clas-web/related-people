@@ -1,0 +1,16 @@
+
+.wscontrol.related-people-control {
+	text-align:center;
+}
+
+.wscontrol.related-people-control .person {
+	display:inline-block;
+	width:28%;
+	padding:1%;
+	margin:1%;
+	border:solid 1px #ccc;
+}
+
+.wscontrol.related-people-control .title {
+	font-weight:bold;
+}
