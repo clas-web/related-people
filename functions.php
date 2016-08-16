@@ -31,6 +31,7 @@ function relppl_get_related_people( $person, $count, $restrict_taxonomy, $relate
 				'terms'    => $restricted_term_slugs,
 			),
 		),
+		'exclude' => array( $person->ID ),
 	);
 
 	
