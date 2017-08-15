@@ -75,22 +75,17 @@ function relppl_print_related_people( $title, $person, $count, $restrict_taxonom
 {
 	$people = relppl_get_related_people( $person, $count, $restrict_taxonomy, $related_taxonomy );
 	
-	echo $title;
-	
-	echo '<div class="related-people">';
-	
-	if( ! is_array( $people ) || empty( $people ) ) {
-		echo '<div class="no-related">No related people found.</div>';
-	} else {
+	if( is_array( $people) && count($people) > 0 ) {
+		echo '<div class="related-people-title">'.$title.'</div>';
+		echo '<div class="related-people">';		
 		foreach( $people as $person ) {
 			echo '<div class="person">' . 
 				'<a href="' . get_permalink( $person->ID ) . '" title="' . $person->post_title . '">' .
 				$person->post_title . 
 				'</a></div>';
 		}
+		echo '</div>';
 	}
-	
-	echo '</div>';
 }
 endif;
 
