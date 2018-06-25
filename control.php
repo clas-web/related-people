@@ -1,5 +1,4 @@
 <?php
-require_once( __DIR__.'/widget-shortcode-control.php' );
 
 /**
  * The RelatedPeople_WidgetShortcodeControl class for the "Related People" plugin.
