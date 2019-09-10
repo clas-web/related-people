@@ -79,8 +79,17 @@ function relppl_print_related_people( $title, $person, $count, $restrict_taxonom
 		echo '<div class="related-people-title">'.$title.'</div>';
 		echo '<div class="related-people">';		
 		foreach( $people as $person ) {
+			$terms = wp_get_post_terms( $person->ID, $restrict_taxonomy );			
+			$person_interests = "";
+			foreach ($terms as $term) {
+				if ($person_interests != "") {
+					$person_interests = $person_interests.", ".$term->name;
+				} else {
+					$person_interests = $term->name;
+				}
+			}
 			echo '<div class="person">' . 
-				'<a href="' . get_permalink( $person->ID ) . '" title="' . $person->post_title . '">' .
+				'<a href="' . get_permalink( $person->ID ) . '" title="' . $person_interests . '">' .
 				$person->post_title . 
 				'</a></div>';
 		}
