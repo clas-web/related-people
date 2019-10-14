@@ -75,19 +75,12 @@ function relppl_print_related_people( $title, $person, $count, $restrict_taxonom
 {
 	$people = relppl_get_related_people( $person, $count, $restrict_taxonomy, $related_taxonomy );
 	
-	if( is_array( $people) && count($people) > 0 ) {
+	if( is_array( $people ) && count( $people ) > 0 ) {
 		echo '<div class="related-people-title">'.$title.'</div>';
 		echo '<div class="related-people">';		
 		foreach( $people as $person ) {
 			$terms = wp_get_post_terms( $person->ID, $restrict_taxonomy );			
-			$person_interests = "";
-			foreach ($terms as $term) {
-				if ($person_interests != "") {
-					$person_interests = $person_interests.", ".$term->name;
-				} else {
-					$person_interests = $term->name;
-				}
-			}
+			$person_interests = relppl_get_related_connections( $terms );
 			echo '<div class="person">' . 
 				'<a href="' . get_permalink( $person->ID ) . '" title="' . $person_interests . '">' .
 				$person->post_title . 
@@ -98,4 +91,22 @@ function relppl_print_related_people( $title, $person, $count, $restrict_taxonom
 }
 endif;
 
-
+/**
+ * Return the Academic Interests for a related person.
+ * 
+ * @param array $terms All Academic Interest terms returned by the connection.
+ * @return string The related academic terms.
+ */
+if( ! function_exists('relppl_get_related_connections') ):
+	function relppl_get_related_connections( $terms ) {
+		$relppl_interests = "";
+			foreach ($terms as $term) {
+				if ($relppl_interests != "") {
+					$relppl_interests = $relppl_interests . ", " . $term->name;
+				} else {
+					$relppl_interests = $term->name;
+				}
+			}
+			return $relppl_interests;
+		}
+endif;
