@@ -80,7 +80,7 @@ function relppl_print_related_people( $title, $person, $count, $restrict_taxonom
 		echo '<div class="related-people">';		
 		foreach( $people as $person ) {
 			$terms = wp_get_post_terms( $person->ID, $restrict_taxonomy );			
-			$person_interests = relppl_get_related_connections( $terms );
+			$person_interests = relppl_get_related_interests( $terms );
 			echo '<div class="person">' . 
 				'<a href="' . get_permalink( $person->ID ) . '" title="' . $person_interests . '">' .
 				$person->post_title . 
@@ -94,11 +94,11 @@ endif;
 /**
  * Return the Academic Interests for a related person.
  * 
- * @param array $terms All Academic Interest terms returned by the connection.
- * @return string The related academic terms.
+ * @param Array $terms All Academic Interest terms returned by the connection.
+ * @return String The related academic terms.
  */
-if( ! function_exists('relppl_get_related_connections') ):
-	function relppl_get_related_connections( $terms ) {
+if( ! function_exists( 'relppl_get_related_interests' ) ):
+	function relppl_get_related_interests( $terms ) {
 		$relppl_interests = "";
 			foreach ($terms as $term) {
 				if ($relppl_interests != "") {
@@ -109,4 +109,50 @@ if( ! function_exists('relppl_get_related_connections') ):
 			}
 			return $relppl_interests;
 		}
+endif;
+
+/**
+ * Return the number of members found from a Connection Group query.
+ * @param String $connection_group The Connection Group that will be queried.
+ * @return Integer The number of Connection Group members.
+ */
+if( ! function_exists( 'relppl_get_connection_group_members' ) ):
+	function relppl_get_connection_group_members( $connection_group ) {
+
+		// Create a query for the Connection Group
+		if ( $connection_group ){
+			$args = array(
+				'connection-group' => $connection_group,
+			);
+
+			$relppl_connection_group_query = new WP_Query( $args );
+
+			// If the Connection Group is found, count the number of posts
+			if ( $relppl_connection_group_query->have_posts() ) {
+				$relppl_connection_group_member_count = $relppl_connection_group_query->found_posts;
+			} else {
+				$relppl_connection_group_member_count = 0;
+			}
+
+			// Reset query post data
+			wp_reset_postdata();
+
+			// Return the number of posts
+			return $relppl_connection_group_member_count;
+		} else {
+			// Otherwise, do not create a new query, return the found posts from the current query
+			global $wp_the_query;
+			return $wp_the_query->found_posts;
+		}
+	}
+endif;
+
+/**
+ * Build the URL for Connection Groups.
+ * @param Array $group The Connection Group array filled with data on a particular Connection Group.
+ */
+if( ! function_exists( 'relppl_print_connection_group_link' ) ):
+	function relppl_print_connection_group_link( $group ) {
+		echo vtt_get_anchor( $group['link'], relppl_get_connection_group_members( $group['name'] ) . ' members', null, $group['name'] );
+	}
 endif;
