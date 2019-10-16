@@ -147,6 +147,7 @@ endif;
 if( ! function_exists( 'relppl_print_connection_group_link' ) ):
 	function relppl_print_connection_group_link( $group ) {
 		$num_of_matches = relppl_get_connection_group_members( $group['name'] );
-		echo vtt_get_anchor( $group['link'], sprintf(_n( '%s match', '%s matches', $num_of_matches ), $num_of_matches ), null, $group['name'] );
+		$group_classes = ( $group['slug'] ? $group['slug'] : null );
+		echo vtt_get_anchor( $group['link'], sprintf(_n( '%s match', '%s matches', $num_of_matches ), $num_of_matches ), $group_classes, $group['name'] );
 	}
 endif;
