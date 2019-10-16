@@ -119,19 +119,22 @@ endif;
 if( ! function_exists( 'relppl_get_connection_group_members' ) ):
 	function relppl_get_connection_group_members( $connection_group ) {
 
+		global $wp_the_query;
+
 		// Retrieve term for the Connection Group if one has been passed
 		if ( $connection_group ){
-			$connection_group_term = get_term_by( 'name', $connection_group, 'connection-group' );
-			
+			$connection_group_terms = get_terms( array(
+				'name' => $connection_group
+			));
+
 			// Return term count
-			if ( $connection_group_term ){
-				return $connection_group_term->count;
-			} else {
+			if ($connection_group_terms) {
+				return $connection_group_terms[0]->count;
+			} else  {
 				return 0;
 			}			
 		} else {
-			// Otherwise, do not create a new query, return the found posts from the current query
-			global $wp_the_query;
+			// Otherwise, do not create a new query, return the found posts from the current query			
 			return $wp_the_query->found_posts;
 		}
 	}
@@ -143,6 +146,7 @@ endif;
  */
 if( ! function_exists( 'relppl_print_connection_group_link' ) ):
 	function relppl_print_connection_group_link( $group ) {
-		echo vtt_get_anchor( $group['link'], relppl_get_connection_group_members( $group['name'] ) . ' members', null, $group['name'] );
+		$num_of_matches = relppl_get_connection_group_members( $group['name'] );
+		echo vtt_get_anchor( $group['link'], sprintf(_n( '%s match', '%s matches', $num_of_matches ), $num_of_matches ), null, $group['name'] );
 	}
 endif;
