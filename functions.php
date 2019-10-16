@@ -142,7 +142,7 @@ endif;
 
 /**
  * Build the URL for Connection Groups.
- * @param Array $group The Connection Group array filled with data on a particular Connection Group.
+ * @param Object $group Filled with data on a particular Connection Group.
  */
 if( ! function_exists( 'relppl_print_connection_group_link' ) ):
 	function relppl_print_connection_group_link( $group ) {
