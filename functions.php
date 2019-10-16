@@ -113,32 +113,22 @@ endif;
 
 /**
  * Return the number of members found from a Connection Group query.
- * @param String $connection_group The Connection Group that will be queried.
+ * @param String $connection_group The Connection Group that will be queried. If blank, returns current query.
  * @return Integer The number of Connection Group members.
  */
 if( ! function_exists( 'relppl_get_connection_group_members' ) ):
 	function relppl_get_connection_group_members( $connection_group ) {
 
-		// Create a query for the Connection Group
+		// Retrieve term for the Connection Group if one has been passed
 		if ( $connection_group ){
-			$args = array(
-				'connection-group' => $connection_group,
-			);
-
-			$relppl_connection_group_query = new WP_Query( $args );
-
-			// If the Connection Group is found, count the number of posts
-			if ( $relppl_connection_group_query->have_posts() ) {
-				$relppl_connection_group_member_count = $relppl_connection_group_query->found_posts;
+			$connection_group_term = get_term_by( 'name', $connection_group, 'connection-group' );
+			
+			// Return term count
+			if ( $connection_group_term ){
+				return $connection_group_term->count;
 			} else {
-				$relppl_connection_group_member_count = 0;
-			}
-
-			// Reset query post data
-			wp_reset_postdata();
-
-			// Return the number of posts
-			return $relppl_connection_group_member_count;
+				return 0;
+			}			
 		} else {
 			// Otherwise, do not create a new query, return the found posts from the current query
 			global $wp_the_query;
