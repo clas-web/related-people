@@ -73,10 +73,15 @@ if ( ! function_exists( 'relppl_print_related_people' ) ) :
 			echo '<div class="related-people-title">' . $title . '</div>';
 			echo '<div class="related-people">';
 			foreach ( $people as $person ) {
-				$terms            = wp_get_post_terms( $person->ID, $restrict_taxonomy );
-				$person_interests = relppl_get_related_interests( $terms );
+				$terms  = wp_get_post_terms( $person->ID, $restrict_taxonomy );
+				$groups = wp_get_post_terms( $person->ID, 'connection-group' );
+
+				$person_interests = relppl_get_related_values( $terms );
+				$person_groups    = relppl_get_related_values( $groups );
+
 				echo '<div class="person">' .
-				'<a href="' . get_permalink( $person->ID ) . '" title="' . $person_interests . '">' .
+				'<a href="' . get_permalink( $person->ID ) .
+				'" title="Groups: ' . $person_groups . "\r\n" . 'Related Interests: ' . $person_interests . '">' .
 				$person->post_title .
 				'</a></div>';
 			}
@@ -86,22 +91,22 @@ if ( ! function_exists( 'relppl_print_related_people' ) ) :
 endif;
 
 /**
- * Return the Academic Interests for a related person.
+ * Return the Academic Interests or Groups for a related person as a string.
  *
- * @param Array $terms All Academic Interest terms returned by the connection.
+ * @param Array $terms All Academic terms returned by the connection.
  * @return String The related academic terms.
  */
-if ( ! function_exists( 'relppl_get_related_interests' ) ) :
-	function relppl_get_related_interests( $terms ) {
-		$relppl_interests = '';
+if ( ! function_exists( 'relppl_get_related_values' ) ) :
+	function relppl_get_related_values( $terms ) {
+		$relppl_academic_terms = '';
 		foreach ( $terms as $term ) {
-			if ( $relppl_interests != '' ) {
-				$relppl_interests = $relppl_interests . ', ' . $term->name;
+			if ( $relppl_academic_terms != '' ) {
+				$relppl_academic_terms = $relppl_academic_terms . ', ' . $term->name;
 			} else {
-				$relppl_interests = $term->name;
+				$relppl_academic_terms = $term->name;
 			}
 		}
-			return $relppl_interests;
+		return $relppl_academic_terms;
 	}
 endif;
 
