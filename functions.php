@@ -57,7 +57,9 @@ if ( ! function_exists( 'relppl_get_related_people' ) ) :
 	}
 endif;
 
-//TODO: remove span titles within styled title divs
+// TODO: remove span titles within styled title divs
+// TODO: fix line break in title once using styled css
+// TODO: convert titles to aria-labels to prevent titles from appearing twice
 
 /**
  *
