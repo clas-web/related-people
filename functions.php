@@ -57,6 +57,7 @@ if ( ! function_exists( 'relppl_get_related_people' ) ) :
 	}
 endif;
 
+//TODO: remove span titles within styled title divs
 
 /**
  *
@@ -81,8 +82,8 @@ if ( ! function_exists( 'relppl_print_related_people' ) ) :
 
 				echo '<div class="person">' .
 				'<a href="' . get_permalink( $person->ID ) .
-				'" title="Groups: ' . $person_groups . "\r\n" . 'Academic Interests: ' . $person_interests . '">' .
-				$person->post_title .
+				'" title="Groups: ' . $person_groups . "\n" . 'Academic Interests: ' . $person_interests . '">' .
+				'<span title="">' . $person->post_title . '</span>' .
 				'</a></div>';
 			}
 			echo '</div>';
@@ -142,6 +143,8 @@ if ( ! function_exists( 'relppl_get_connection_group_members' ) ) :
 	}
 endif;
 
+//TODO: convert titles to aria-labels, use get_tax_link or something like that instead of vtt_get_anchor
+
 /**
  * Build the URL for Connection Groups and Links.
  *
@@ -155,6 +158,11 @@ if ( ! function_exists( 'relppl_print_connection_url' ) ) :
 			$taxonomy_classes .= ' ';
 		};
 		$taxonomy_classes .= 'connection-group';
-		echo vtt_get_anchor( $taxonomy['link'], sprintf( _n( '%s person', '%s people', $num_of_matches ), $num_of_matches ), $taxonomy_classes, $taxonomy['name'] );
+		echo vtt_get_anchor(
+			$taxonomy['link'],
+			sprintf( _n( '%s person', '%s people', $num_of_matches ), $num_of_matches ),
+			$taxonomy_classes,
+			'<span title="">' . $taxonomy['name'] . '</span>'
+		);
 	}
 endif;
