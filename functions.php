@@ -81,7 +81,7 @@ if ( ! function_exists( 'relppl_print_related_people' ) ) :
 
 				echo '<div class="person">' .
 				'<a href="' . get_permalink( $person->ID ) .
-				'" title="Groups: ' . $person_groups . "\r\n" . 'Related Interests: ' . $person_interests . '">' .
+				'" title="Groups: ' . $person_groups . "\r\n" . 'Academic Interests: ' . $person_interests . '">' .
 				$person->post_title .
 				'</a></div>';
 			}
@@ -100,7 +100,7 @@ if ( ! function_exists( 'relppl_get_related_values' ) ) :
 	function relppl_get_related_values( $terms ) {
 		$relppl_academic_terms = '';
 		foreach ( $terms as $term ) {
-			if ( $relppl_academic_terms != '' ) {
+			if ( '' !== $relppl_academic_terms ) {
 				$relppl_academic_terms = $relppl_academic_terms . ', ' . $term->name;
 			} else {
 				$relppl_academic_terms = $term->name;
@@ -143,14 +143,18 @@ if ( ! function_exists( 'relppl_get_connection_group_members' ) ) :
 endif;
 
 /**
- * Build the URL for Connection Groups.
+ * Build the URL for Connection Groups and Links.
  *
- * @param Object $group Filled with data on a particular Connection Group.
+ * @param Object $taxonomy A particular Connection Group or Link.
  */
-if ( ! function_exists( 'relppl_print_connection_group_link' ) ) :
-	function relppl_print_connection_group_link( $group ) {
-		$num_of_matches = relppl_get_connection_group_members( $group['name'] );
-		$group_classes  = ( $group['slug'] ? $group['slug'] : null );
-		echo vtt_get_anchor( $group['link'], sprintf( _n( '%s person', '%s people', $num_of_matches ), $num_of_matches ), $group_classes, $group['name'] );
+if ( ! function_exists( 'relppl_print_connection_url' ) ) :
+	function relppl_print_connection_url( $taxonomy ) {
+		$num_of_matches   = relppl_get_connection_group_members( $taxonomy['name'] );
+		$taxonomy_classes = ( $taxonomy['slug'] ? $taxonomy['slug'] : '' );
+		if ( '' !== $taxonomy_classes ) {
+			$taxonomy_classes .= ' ';
+		};
+		$taxonomy_classes .= 'connection-group';
+		echo vtt_get_anchor( $taxonomy['link'], sprintf( _n( '%s person', '%s people', $num_of_matches ), $num_of_matches ), $taxonomy_classes, $taxonomy['name'] );
 	}
 endif;
