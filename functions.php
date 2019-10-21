@@ -57,10 +57,6 @@ if ( ! function_exists( 'relppl_get_related_people' ) ) :
 	}
 endif;
 
-// TODO: remove span titles within styled title divs
-// TODO: fix line break in title once using styled css
-// TODO: convert titles to aria-labels to prevent titles from appearing twice
-
 /**
  *
  * @param  String  $title
@@ -145,8 +141,6 @@ if ( ! function_exists( 'relppl_get_connection_group_members' ) ) :
 	}
 endif;
 
-//TODO: convert titles to aria-labels, use get_tax_link or something like that instead of vtt_get_anchor
-
 /**
  * Build the URL for Connection Groups and Links.
  *
@@ -156,35 +150,26 @@ if ( ! function_exists( 'relppl_print_connection_url' ) ) :
 	function relppl_print_connection_url( $taxonomy ) {
 		$num_of_matches   = relppl_get_connection_group_members( $taxonomy['name'] );
 		$taxonomy_classes = ( $taxonomy['slug'] ? $taxonomy['slug'] : '' );
+		$connection_terms = get_terms(
+			array(
+				'name' => $taxonomy['name'],
+			)
+		);
 
-		//TODO: auto update based on taxonomy, group OR link
-		$taxonomy_type = 'connection-group';
+		foreach ( $connection_terms as $connection_term ) {
+			$taxonomy_type = $connection_term->taxonomy;
 
-		// If there is a class, add a space to account for taxonomy
-		if ( '' !== $taxonomy_classes ) {
-			$taxonomy_classes .= ' ';
-		};
+			// If there is a class, add a space to account for taxonomy class
+			if ( '' !== $taxonomy_classes ) {
+				$taxonomy_classes .= ' ';
+			};
 
-		$taxonomy_classes .= $taxonomy_type;
-
-		// $test_link = get_term_link( $taxonomy['name'], $taxonomy_type );
-
-		// echo '<div class="person">' .
-		// 		'<a href="' . get_permalink( $person->ID ) .
-		// 		'" aria-label="Groups: ' . $person_groups . "\n" . 'Academic Interests: ' . $person_interests . '">' .
-		// 		$person->post_title .
-		// 		'</a></div>';
+			$taxonomy_classes .= $taxonomy_type;
+		}
 
 		$anchor = '<a href="' . $taxonomy['link'] . '" aria-label="' . htmlentities( sprintf( _n( '%s person', '%s people', $num_of_matches ), $num_of_matches ) ) . '"' .
 		' class="' . $taxonomy_classes . '">' . $taxonomy['name'] . '</a>';
 
 		echo $anchor;
-
-		// echo vtt_get_anchor(
-		// 	$taxonomy['link'],
-		// 	sprintf( _n( '%s person', '%s people', $num_of_matches ), $num_of_matches ),
-		// 	$taxonomy_classes,
-		// 	$taxonomy['name']
-		// );
 	}
 endif;
