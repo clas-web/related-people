@@ -84,8 +84,8 @@ if ( ! function_exists( 'relppl_print_related_people' ) ) :
 
 				echo '<div class="person">' .
 				'<a href="' . get_permalink( $person->ID ) .
-				'" title="Groups: ' . $person_groups . "\n" . 'Academic Interests: ' . $person_interests . '">' .
-				'<span title="">' . $person->post_title . '</span>' .
+				'" aria-label="Groups: ' . $person_groups .  "\n" . '" data-title="Academic Interests: ' . $person_interests . '">' .
+				$person->post_title .
 				'</a></div>';
 			}
 			echo '</div>';
@@ -156,15 +156,35 @@ if ( ! function_exists( 'relppl_print_connection_url' ) ) :
 	function relppl_print_connection_url( $taxonomy ) {
 		$num_of_matches   = relppl_get_connection_group_members( $taxonomy['name'] );
 		$taxonomy_classes = ( $taxonomy['slug'] ? $taxonomy['slug'] : '' );
+
+		//TODO: auto update based on taxonomy, group OR link
+		$taxonomy_type = 'connection-group';
+
+		// If there is a class, add a space to account for taxonomy
 		if ( '' !== $taxonomy_classes ) {
 			$taxonomy_classes .= ' ';
 		};
-		$taxonomy_classes .= 'connection-group';
-		echo vtt_get_anchor(
-			$taxonomy['link'],
-			sprintf( _n( '%s person', '%s people', $num_of_matches ), $num_of_matches ),
-			$taxonomy_classes,
-			'<span title="">' . $taxonomy['name'] . '</span>'
-		);
+
+		$taxonomy_classes .= $taxonomy_type;
+
+		// $test_link = get_term_link( $taxonomy['name'], $taxonomy_type );
+
+		// echo '<div class="person">' .
+		// 		'<a href="' . get_permalink( $person->ID ) .
+		// 		'" aria-label="Groups: ' . $person_groups . "\n" . 'Academic Interests: ' . $person_interests . '">' .
+		// 		$person->post_title .
+		// 		'</a></div>';
+
+		$anchor = '<a href="' . $taxonomy['link'] . '" aria-label="' . htmlentities( sprintf( _n( '%s person', '%s people', $num_of_matches ), $num_of_matches ) ) . '"' .
+		' class="' . $taxonomy_classes . '">' . $taxonomy['name'] . '</a>';
+
+		echo $anchor;
+
+		// echo vtt_get_anchor(
+		// 	$taxonomy['link'],
+		// 	sprintf( _n( '%s person', '%s people', $num_of_matches ), $num_of_matches ),
+		// 	$taxonomy_classes,
+		// 	$taxonomy['name']
+		// );
 	}
 endif;
