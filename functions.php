@@ -80,7 +80,7 @@ if ( ! function_exists( 'relppl_print_related_people' ) ) :
 
 				echo '<div class="person">' .
 				'<a href="' . get_permalink( $person->ID ) .
-				'" aria-label="Groups: ' . $person_groups .  "\n" . '" data-title="Academic Interests: ' . $person_interests . '">' .
+				'" aria-label="Groups: ' . $person_groups . "\n" . '" data-title="Academic Interests: ' . $person_interests . '">' .
 				$person->post_title .
 				'</a></div>';
 			}
@@ -148,10 +148,13 @@ endif;
  */
 if ( ! function_exists( 'relppl_print_connection_url' ) ) :
 	function relppl_print_connection_url( $taxonomy ) {
-		$num_of_matches   = relppl_get_connection_group_members( $taxonomy['name'] );
-		$taxonomy_classes = $taxonomy['slug'] ? $taxonomy['slug'] : '';
+		$num_of_matches    = relppl_get_connection_group_members( $taxonomy['name'] );
+
+		// Add slug and taxonomy type to current classes
+		$taxonomy_classes  = $taxonomy['slug'] ? $taxonomy['slug'] : '';
+		$taxonomy_classes .= ( '' !== $taxonomy_classes && $taxonomy['class'] ) ? ' ' : '';
 		$taxonomy_classes .= $taxonomy['class'] ? sanitize_title_with_dashes( $taxonomy['class'] ) : '';
-		$connection_terms = get_terms(
+		$connection_terms  = get_terms(
 			array(
 				'name' => $taxonomy['name'],
 			)
@@ -160,7 +163,6 @@ if ( ! function_exists( 'relppl_print_connection_url' ) ) :
 		foreach ( $connection_terms as $connection_term ) {
 			$taxonomy_type = $connection_term->taxonomy;
 
-			// If there is a class, add a space to account for taxonomy class
 			if ( '' !== $taxonomy_classes ) {
 				$taxonomy_classes .= ' ';
 			};
