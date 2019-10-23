@@ -142,7 +142,7 @@ if ( ! function_exists( 'relppl_get_connection_group_members' ) ) :
 endif;
 
 /**
- * Build the URL for Connection Groups and Links.
+ * Build the anchor tag for Connection Groups and Links.
  *
  * @param Object $taxonomy A particular Connection Group or Link.
  */
