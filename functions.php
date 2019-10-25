@@ -148,7 +148,7 @@ endif;
  */
 if ( ! function_exists( 'relppl_print_connection_url' ) ) :
 	function relppl_print_connection_url( $taxonomy ) {
-		$num_of_matches    = relppl_get_connection_group_members( $taxonomy['name'] );
+		$num_of_matches = relppl_get_connection_group_members( $taxonomy['name'] );
 
 		// Add slug and taxonomy type to current classes
 		$taxonomy_classes  = $taxonomy['slug'] ? $taxonomy['slug'] : '';
