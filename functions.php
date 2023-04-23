@@ -151,9 +151,14 @@ if ( ! function_exists( 'relppl_print_connection_url' ) ) :
 		$num_of_matches = relppl_get_connection_group_members( $taxonomy['name'] );
 
 		// Add slug and taxonomy type to current classes
-		$taxonomy_classes  = $taxonomy['slug'] ? $taxonomy['slug'] : '';
-		$taxonomy_classes .= ( '' !== $taxonomy_classes && $taxonomy['class'] ) ? ' ' : '';
-		$taxonomy_classes .= $taxonomy['class'] ? sanitize_title_with_dashes( $taxonomy['class'] ) : '';
+		$taxonomy_classes = '';
+		if (isset($taxonomy['slug'])) {
+			$taxonomy_classes = $taxonomy['slug'];
+		}
+		if (isset($taxonomy['class'])) {
+			$taxonomy_classes .= ( '' !== $taxonomy_classes && $taxonomy['class'] ) ? ' ' : '';
+			$taxonomy_classes .= $taxonomy['class'] ? sanitize_title_with_dashes( $taxonomy['class'] ) : '';
+		}
 		$connection_terms  = get_terms(
 			array(
 				'name' => $taxonomy['name'],
