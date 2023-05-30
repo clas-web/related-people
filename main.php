@@ -3,8 +3,8 @@
 Plugin Name: Related People
 Plugin URI: https://github.com/clas-web/related-people
 Description: 
-Version: 0.2.2
-Author: Crystal Barton
+Version: 0.3.0
+Author: Crystal Barton & Alex Chapin
 Author URI: https://www.linkedin.com/in/crystalbarton
 GitHub Plugin URI: https://github.com/clas-web/related-people
 */
